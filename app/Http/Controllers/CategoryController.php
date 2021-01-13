@@ -45,5 +45,9 @@ class CategoryController extends Controller
         $cateupdate->save();
         return redirect()->route('categories.index');
     }
+    public function delete($id){
+        $this->category->find($id)->delete();
+        return redirect()->route('categories.index');
+    }
 }
 
