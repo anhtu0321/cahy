@@ -16,8 +16,31 @@
                         <a href="{{ route('categories.create') }}" class="btn btn-success float-right m-2">Add</a>
                     </div>
                     <div class="col-md-12">
-                        Trang chu
+                        <table class="table table-light">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Tên danh mục</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ( $cates as $cate )
+                                <tr>
+                                    <td>{{ $cate -> id }}</td>
+                                    <td>{{ $cate -> name }}</td>
+                                    <td>
+                                        <a href="{{ route('categories.edit', ['id'=> $cate->id]) }}" class="btn btn-default">Sửa</a>
+                                        <a href="{{ route('categories.delete', ['id'=> $cate->id]) }}" class="btn btn-danger">Xóa</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
 
+                    </div>
+                    <div class="col-md-12">
+                        {{ $cates->links() }}
                     </div>
                     <!-- /.col-md-12 -->
                 </div>

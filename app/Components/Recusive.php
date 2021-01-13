@@ -4,11 +4,16 @@ namespace App\Components;
 
 class Recusive {
     private $htmlSelect;
-    function categoryRecusive($data, $id, $text){
-        foreach ($data as $value) {
+    function categoryRecusive($data, $id, $text, $parentId){
+        foreach ($data as $key => $value) {
             if($value->parent_id == $id){
-                $this->htmlSelect .= '<option>'.$text.' '.$value->name.'</option>';
-                $this->categoryRecusive($data, $value['id'], $text.'--');
+                if(isset($parentId) && $parentId == $value->id){
+                    $this->htmlSelect .= '<option selected="selected" value="'.$value->id.'">'.$text.' '.$value->name.'</option>';
+                }else{
+                    $this->htmlSelect .= '<option value="'.$value->id.'">'.$text.' '.$value->name.'</option>';
+                }
+                $this->categoryRecusive($data, $value['id'], $text.'--', $parentId);
+                unset($data[$key]);
             }
         }
         return $this -> htmlSelect;
