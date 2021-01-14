@@ -12,8 +12,9 @@ class Recusive {
                 }else{
                     $this->htmlSelect .= '<option value="'.$value->id.'">'.$text.' '.$value->name.'</option>';
                 }
-                $this->categoryRecusive($data, $value['id'], $text.'--', $parentId);
                 unset($data[$key]);
+                $this->categoryRecusive($data, $value['id'], $text.'--', $parentId);
+                
             }
         }
         return $this -> htmlSelect;
