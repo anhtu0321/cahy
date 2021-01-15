@@ -5,7 +5,7 @@
 @section('content')
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        @include('partials.content-header',['name' => 'Category', 'key' => 'List'])
+        @include('partials.content-header',['name' => 'Menu', 'key' => 'List'])
         <!-- /.content-header -->
 
         <!-- Main content -->

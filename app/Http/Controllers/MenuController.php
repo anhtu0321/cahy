@@ -16,12 +16,12 @@ class MenuController extends Controller
     public function index()
     {
         $data['menus'] = $this->menu->latest()->paginate(5);
-        return view('menu.index',$data);
+        return view('admin.menu.index',$data);
     }
     public function create(){
         $recusive = new Recusive();
         $data['option']=$recusive->categoryRecusive($this->dataMenu, $id=0, '','');
-        return view('menu.add',$data);
+        return view('admin.menu.add',$data);
     }
     public function store(Request $request){
         $this->menu->name = $request->name;
@@ -34,7 +34,7 @@ class MenuController extends Controller
         $recusive = new Recusive();
         $data['menus'] = $this->menu->find($id);
         $data['option'] = $recusive->categoryRecusive($this->dataMenu, $id=0, '', $data['menus']->parent_id);
-        return view('menu.edit',$data);
+        return view('admin.menu.edit',$data);
     }
     public function update(Request $request, $id){
         $menuupdate = $this->menu->find($id);
