@@ -22,6 +22,6 @@ class adminController extends Controller
             'password' => $request->password
         ],$remember)){
             return redirect()->to('home');
-        }else{dd('chua');}
+        }else{dd(bcrypt('123123123'));}
     }
 }
