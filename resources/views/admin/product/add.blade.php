@@ -5,6 +5,7 @@
 @section('css')
     <link href="{{ asset('vendors/select2/select2.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('/admins/product/add/add.css') }}" rel="stylesheet" />
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.css" rel="stylesheet">
 @endsection
 @section('content')
     <div class="content-wrapper">
@@ -13,7 +14,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-6">
-                        <form method="post" action="{{ route('categories.store') }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('product.store') }}" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label>Tên sản phẩm</label>
                                 <input class="form-control" type="text" name="name">
@@ -45,11 +46,9 @@
                             </div>
                             <div class="form-group">
                                 <label>Nhập nội dung</label>
-                                <textarea class="form-control" name="content" id="content" rows="3"></textarea>
-                                
-                                
+                                <textarea name="content" class="form-control my-editor"></textarea> 
                             </div>
-                            <button class="btn btn-primary" type="submit">Thêm</button>
+                              <button class="btn btn-primary" type="submit">Thêm</button>
                             @csrf
                         </form>
                     </div>
@@ -60,7 +59,9 @@
 @endsection
 @section('js')
     <script src="{{ asset('vendors/select2/select2.min.js') }}"></script>
+    <script src="{{ asset('vendors/tinymce/js/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('/admins/product/add/add.js') }}"></script>
+    {{-- Tuy chon cho select2 --}}
     <script>
         $(function(){
             $(".tags_select_choose").select2({
@@ -73,9 +74,39 @@
             })
         })
     </script>
-    <script src="{{ asset('vendors/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('vendors/ckfinder/ckfinder.js')}}" type="text/javascript"></script>
+    {{-- Tuy chon cho tinymce --}}
     <script>
-        CKEDITOR.replace("content");
+      var editor_config = {
+        path_absolute : "/",
+        selector: "textarea.my-editor",
+        plugins: [
+          "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+          "searchreplace wordcount visualblocks visualchars code fullscreen",
+          "insertdatetime media nonbreaking save table contextmenu directionality",
+          "emoticons template paste textcolor colorpicker textpattern"
+        ],
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+        relative_urls: false,
+        // them nut chon anh trong plugin anh bang function file_picker_callback
+        file_picker_callback: function (callback, value, meta) {
+          let x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+          let y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
+
+          let type = 'image' === meta.filetype ? 'Images' : 'Files',
+              url  = '/shopping/public/laravel-filemanager?editor=tinymce5&type=' + type;
+
+          tinymce.activeEditor.windowManager.openUrl({
+              url : url,
+              title : 'Filemanager',
+              width : x * 0.8,
+              height : y * 0.8,
+              onMessage: (api, message) => {
+                  callback(message.content);
+              }
+          });
+        }
+      };
+    
+      tinymce.init(editor_config);
     </script>
 @endsection

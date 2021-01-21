@@ -10,7 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});
 Route::get('/admin', 'adminController@loginAdmin');
 Route::post('/admin', 'adminController@postLoginAdmin');
 Route::get('home', function () {
