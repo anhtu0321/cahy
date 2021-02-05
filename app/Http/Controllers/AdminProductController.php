@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Category;
+use App\Product;
 use App\Components\Recusive;
+use App\Traits\StorageImageTrait;
 use Storage;
 class AdminProductController extends Controller
 {
-    private $category;
+    use StorageImageTrait;
+    private $product;
     private $datacate;
     public function __construct(){
-        $this->category = new Category;
+        $this->product = new product;
         $this->datacate = Category::all();
     }
     public function index(){
@@ -23,14 +26,17 @@ class AdminProductController extends Controller
         return view('admin.product.add',$data);
     }
     public function store(Request $request){
-        $file = $request->file('feature_image_path');
-        $fileNameOrigin = $file->getClientOriginalName();
-        $fileNameHash = str_random(20).'.'.$file->getClientOriginalExtension();
-        $path = $file->storeAs('public/product/'.auth()->id(),$fileNameHash);
-        $data = [
-            'file name' => $fileNameOrigin,
-            'path' => Storage::url($path)
-        ];
+        $data = $this->storageTraitUpload($request,'feature_image_path','product');
+        if(!empty($data)){
+            $this->product->feature_image_name = $data['file_name'];
+            $this->product->feature_image_path = $data['file_path'];
+        }
+        $this->product->name = $request->name;
+        $this->product->price = $request->price;
+        $this->product->content = $request->content;
+        $this->product->user_id = auth()->id();
+        $this->product->category_id = $request->category_id;
+        $this->product->save();
         dd($data);
     }
 }

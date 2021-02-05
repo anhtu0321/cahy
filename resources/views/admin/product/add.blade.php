@@ -33,7 +33,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Chọn Danh mục</label>
-                                <select class="form-control select2_init" name="parent_id">
+                                <select class="form-control select2_init" name="category_id">
                                     <option value="0">Chọn danh mục</option>
                                     {!! $option !!}
                                 </select>
